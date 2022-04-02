@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "element-plus": "^2.1.7",
     "vue": "^3.0.0",
     "vue-router": "^4.0.14",
     "vuex": "^4.0.2"
@@ -34,7 +35,9 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "prettier": "^2.6.1",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.5",
+    "unplugin-auto-import": "^0.6.9",
+    "unplugin-vue-components": "^0.18.5"
   },
   "config": {
     "commitizen": {
