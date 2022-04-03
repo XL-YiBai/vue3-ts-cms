@@ -7,8 +7,6 @@ import {
   ElFormItem,
   ElInput,
   ElRadio,
-  ElAlert,
-  ElAside,
   ElTabs,
   ElTabPane,
   ElIcon
@@ -20,8 +18,6 @@ const components = [
   ElFormItem,
   ElInput,
   ElRadio,
-  ElAlert,
-  ElAside,
   ElTabs,
   ElTabPane,
   ElIcon
