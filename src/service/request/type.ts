@@ -13,4 +13,5 @@ export interface XLRequestInterceptors {
 // 继承原本axios的类型，并做扩展，可以传入拦截器参数
 export interface XLRequestConfig extends AxiosRequestConfig {
   interceptors?: XLRequestInterceptors
+  showLoading?: boolean
 }

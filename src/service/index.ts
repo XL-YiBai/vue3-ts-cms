@@ -8,6 +8,13 @@ const xlRequest = new XLRequest({
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptor: (config) => {
+      // 模仿携带token的拦截
+      const token = ''
+      if (token) {
+        // eslint-disable-next-line
+        config.headers!.Authorization = `Bearer ${token}`
+      }
+
       console.log('请求成功的拦截')
       return config
     },

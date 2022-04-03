@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { globalregisterApp } from './global/index'
+import 'element-plus/dist/index.css'
 
 // import './service/axios.demo'
 import xlRequest from './service/index'
@@ -37,5 +38,6 @@ console.log(process.env.VUE_APP_BASE_URL)
 
 xlRequest.request({
   url: '/home/multidata',
-  method: 'GET'
+  method: 'GET',
+  showLoading: false
 })
