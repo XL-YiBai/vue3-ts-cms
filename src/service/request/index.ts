@@ -83,7 +83,7 @@ class XLRequest {
   }
 
   // 使用XLRequestConfig类型，让单个请求也能接收拦截器对象interceptors
-  request<T>(config: XLRequestConfig): Promise<T> {
+  request<T>(config: XLRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 判断是否传入请求拦截器，如果有，就执行该拦截器，拦截器返回的结果也是config配置对象
       if (config.interceptors?.requestInterceptor) {
@@ -101,7 +101,7 @@ class XLRequest {
         .then((res) => {
           // 判断是否传入响应拦截器，如果有就执行一下该拦截器
           if (config.interceptors?.responseInterceptor) {
-            // res = config.interceptors.responseInterceptor(res)
+            res = config.interceptors.responseInterceptor(res)
           }
 
           this.showLoading = DEFAULT_LOADING // 在请求结束后，把实例showLoading重新置为默认值，避免影响之后的请求
@@ -116,19 +116,19 @@ class XLRequest {
     })
   }
 
-  get<T>(config: XLRequestConfig): Promise<T> {
+  get<T>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: XLRequestConfig): Promise<T> {
+  post<T>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
 
-  delete<T>(config: XLRequestConfig): Promise<T> {
+  delete<T>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T>(config: XLRequestConfig): Promise<T> {
+  patch<T>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
