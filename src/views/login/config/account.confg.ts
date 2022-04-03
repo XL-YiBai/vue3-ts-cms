@@ -19,8 +19,8 @@ export const rules = {
       trigger: 'blur'
     },
     {
-      pattern: /^[a-z0-9]{3,}$/,
-      message: '密码必须是3位以上的字母或者数字~',
+      pattern: /^[a-z0-9]{6,}$/,
+      message: '密码必须是6位以上的字母或者数字~',
       trigger: 'blur'
     }
   ]
