@@ -7,8 +7,9 @@ import {
   ElFormItem,
   ElInput,
   ElRadio,
-  ElAlert,
-  ElAside
+  ElTabs,
+  ElTabPane,
+  ElIcon
 } from 'element-plus'
 
 const components = [
@@ -17,8 +18,9 @@ const components = [
   ElFormItem,
   ElInput,
   ElRadio,
-  ElAlert,
-  ElAside
+  ElTabs,
+  ElTabPane,
+  ElIcon
 ]
 
 export default function (app: App): void {
