@@ -43,10 +43,13 @@ export default defineComponent({
   components: { UserFilled, Iphone, LoginAccount, LoginPhone },
   setup() {
     const isKeepPassword = ref(true)
+    // 获取用户名登录组件(login-account)实例，InstanceType<typeof LoginAccount>拿到实例的类型
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
 
+    // 登录处理函数
     const handleLoginClick = () => {
-      accountRef.value?.loginAction()
+      // 调用子组件实例中对应处理登录的方法，传入参数表示是否需要记住密码
+      accountRef.value?.loginAction(isKeepPassword.value)
     }
 
     return { isKeepPassword, accountRef, handleLoginClick }
