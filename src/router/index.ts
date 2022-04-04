@@ -22,6 +22,7 @@ const router = createRouter({
   history: createWebHashHistory()
 })
 
+// 使用全局导航守卫做拦截，除开登录页都需要判断是否有token信息
 router.beforeEach((to) => {
   if (to.path !== '/login') {
     const token = localCache.getCache('token')
