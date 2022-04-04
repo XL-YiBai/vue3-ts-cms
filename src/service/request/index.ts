@@ -37,7 +37,7 @@ class XLRequest {
     // 2. 在类中添加全局拦截器，所有实例共享
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有的实例都有的拦截器：请求成功的拦截')
+        // console.log('所有的实例都有的拦截器：请求成功的拦截')
 
         if (this.showLoading) {
           this.loading = ElLoading.service({
@@ -50,13 +50,13 @@ class XLRequest {
         return config
       },
       (err) => {
-        console.log('所有的实例都有的拦截器：请求失败的拦截')
+        // console.log('所有的实例都有的拦截器：请求失败的拦截')
         return err
       }
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有的实例都有的拦截器：响应成功的拦截')
+        // console.log('所有的实例都有的拦截器：响应成功的拦截')
 
         // 在响应拦截中移除loading
         this.loading?.close()
@@ -69,7 +69,7 @@ class XLRequest {
         }
       },
       (err) => {
-        console.log('所有的实例都有的拦截器：响应失败的拦截')
+        // console.log('所有的实例都有的拦截器：响应失败的拦截')
         // 在响应拦截中移除loading
         this.loading?.close()
 

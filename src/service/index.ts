@@ -15,19 +15,19 @@ const xlRequest = new XLRequest({
         config.headers!.Authorization = `Bearer ${token}`
       }
 
-      console.log('请求成功的拦截')
+      // console.log('请求成功的拦截')
       return config
     },
     requestInterceptorCatch: (err) => {
-      console.log('请求成功的失败')
+      // console.log('请求成功的失败')
       return err
     },
     responseInterceptor: (config) => {
-      console.log('响应成功的拦截')
+      // console.log('响应成功的拦截')
       return config
     },
     responseInterceptorCatch: (err) => {
-      console.log('响应失败的拦截')
+      // console.log('响应失败的拦截')
       return err
     }
   }

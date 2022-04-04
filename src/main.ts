@@ -20,37 +20,3 @@ app.use(globalregisterApp) // 使用app.use会自动执行传入函数，并给�
 app.use(router)
 app.use(store)
 app.mount('#app')
-
-console.log(process.env.VUE_APP_BASE_URL)
-
-// xlRequest.request({
-//   url: '/home/multidata',
-//   method: 'GET',
-//   interceptors: {
-//     requestInterceptor: (config) => {
-//       console.log('单独请求的config')
-//       return config
-//     },
-//     responseInterceptor: (res) => {
-//       console.log('单独响应的response')
-//       return res
-//     }
-//   }
-// })
-
-interface DataType {
-  data: any
-  returnCode: string
-  success: boolean
-}
-
-xlRequest
-  .get<DataType>({
-    url: '/home/multidata',
-    showLoading: false
-  })
-  .then((res) => {
-    console.log(res.data)
-    console.log(res.returnCode)
-    console.log(res.success)
-  })
