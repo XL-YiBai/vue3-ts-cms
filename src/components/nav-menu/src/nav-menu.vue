@@ -4,15 +4,53 @@
       <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
       <span class="title">Vue3+TS</span>
     </div>
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      background-color="#0c2135"
+      text-color="#b7bdc3"
+      active-text-color="#0a60bd"
+    >
+      <!-- 遍历菜单 -->
+      <template v-for="item in userMenus" :key="item.id">
+        <!-- 如果是1表示可展开的菜单 -->
+        <template v-if="item.type === 1">
+          <el-sub-menu :index="item.id + ''">
+            <template #title>
+              <i v-if="item.icon" :class="item.icon"></i>
+              <span>{{ item.name }}</span>
+            </template>
+            <!-- 因为菜单可展开，所以继续遍历子菜单 -->
+            <template v-for="subitem in item.children" :key="subitem.id">
+              <el-menu-item :index="subitem.id + ''">
+                <i v-if="subitem.icon" :class="subitem.icon"></i>
+                <span>{{ subitem.name }}</span>
+              </el-menu-item>
+            </template>
+          </el-sub-menu>
+        </template>
+        <!-- 否则是不可展开的菜单 -->
+        <template v-else-if="item.type === 2">
+          <el-menu-item :index="item.id + ''">
+            <!-- 如果有icon图标，就展示 -->
+            <i v-if="item.icon" :class="item.icon"></i>
+            <span>{{ item.name }}</span>
+          </el-menu-item>
+        </template>
+      </template>
+    </el-menu>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useStore } from '@/store/index'
 
 export default defineComponent({
   setup() {
-    return {}
+    const store = useStore()
+    const userMenus = computed(() => store.state.login.userMenus)
+    return { userMenus }
   }
 })
 </script>
@@ -41,5 +79,34 @@ export default defineComponent({
       color: white;
     }
   }
+
+  // 目录
+  .el-sub-menu {
+    background-color: #001529 !important;
+    // 二级菜单 ( 默认背景 )
+    .el-menu-item {
+      padding-left: 50px !important;
+      background-color: #0c2135 !important;
+    }
+  }
+
+  ::v-deep .el-sub-menu__title {
+    background-color: #001529 !important;
+  }
+
+  // hover 高亮
+  .el-menu-item:hover {
+    color: #fff !important; // 菜单
+  }
+
+  .el-menu-item.is-active {
+    color: #fff !important;
+    background-color: #0a60bd !important;
+  }
+}
+
+.el-menu-vertical:not(.el-menu--collapse) {
+  width: 100%;
+  height: calc(100% - 48px);
 }
 </style>
