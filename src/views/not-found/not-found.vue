@@ -1,6 +1,6 @@
 <template>
-  <div class="menu">
-    <h2>menu</h2>
+  <div>
+    <h2>Not Found</h2>
   </div>
 </template>
 
@@ -8,7 +8,6 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'main-menu',
   setup() {
     return {}
   }

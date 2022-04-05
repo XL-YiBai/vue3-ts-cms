@@ -9,11 +9,21 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
+    name: 'login',
     component: () => import('@/views/login/login.vue')
   },
   {
     path: '/main',
+    name: 'main',
     component: () => import('@/views/main/main.vue')
+    // 子路由应该根据返回用户信息中的userMenus的内容动态决定，
+    // 具体代码在store/login/login.ts中mutations的changeUserMenus方法实现
+    // children: []
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/not-found/not-found.vue')
   }
 ]
 

@@ -1,6 +1,13 @@
 <template>
   <div class="user">
     <h2>user</h2>
+    <ul>
+      <li>用户列表</li>
+      <li>用户列表</li>
+      <li>用户列表</li>
+      <li>用户列表</li>
+      <li>用户列表</li>
+    </ul>
   </div>
 </template>
 

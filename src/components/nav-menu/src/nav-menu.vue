@@ -30,7 +30,10 @@
             </template>
             <!-- 因为菜单可展开，所以继续遍历子菜单 -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <i v-if="subitem.icon" :class="subitem.icon"></i>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -54,6 +57,7 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store/index'
 import { Monitor, Setting, Goods, ChatLineRound } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   components: { Monitor, Setting, Goods, ChatLineRound },
@@ -66,7 +70,14 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
-    return { userMenus }
+    const router = useRouter()
+
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
+    return { userMenus, handleMenuItemClick }
   }
 })
 </script>
