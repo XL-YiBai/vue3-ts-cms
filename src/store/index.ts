@@ -17,6 +17,7 @@ const store = createStore<IRootState>({
   }
 })
 
+// 刷新之后，需要重新获取本地缓存的vuex数据
 export function setupStore() {
   store.dispatch('login/loadLocalLogin')
 }

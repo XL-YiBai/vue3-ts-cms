@@ -9,7 +9,10 @@
           <NavHeader @foldChange="handleFoldChange"></NavHeader>
         </el-header>
         <el-main class="page-content">
-          <router-view></router-view>
+          <!-- 因为每个页面都要设置背景颜色，所以直接一次性在router-view外面设置 -->
+          <div class="page-info">
+            <router-view></router-view>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -51,6 +54,10 @@ export default defineComponent({
 
 .page-content {
   height: calc(100% - 48px);
+  .page-info {
+    background-color: #fff;
+    border-radius: 5px;
+  }
 
   .content {
     background-color: #fff;
