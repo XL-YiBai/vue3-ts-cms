@@ -2,11 +2,12 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
-      <span class="title">Vue3+TS</span>
+      <span class="title" v-if="!collapse">Vue3+TS</span>
     </div>
     <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
+      :collapse="collapse"
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
@@ -17,7 +18,14 @@
         <template v-if="item.type === 1">
           <el-sub-menu :index="item.id + ''">
             <template #title>
-              <i v-if="item.icon" :class="item.icon"></i>
+              <!-- 这里因为element-plus更新，icon组件只能使用split和slice去使用动态组件拼凑 -->
+              <el-icon
+                ><component
+                  v-if="item.icon"
+                  :is="item.icon.split('-').slice(2).join('-')"
+                  :size="20"
+                ></component
+              ></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <!-- 因为菜单可展开，所以继续遍历子菜单 -->
@@ -45,8 +53,16 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store/index'
+import { Monitor, Setting, Goods, ChatLineRound } from '@element-plus/icons-vue'
 
 export default defineComponent({
+  components: { Monitor, Setting, Goods, ChatLineRound },
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
@@ -78,6 +94,10 @@ export default defineComponent({
       font-weight: 700;
       color: white;
     }
+  }
+
+  .el-menu {
+    border-right: none;
   }
 
   // 目录

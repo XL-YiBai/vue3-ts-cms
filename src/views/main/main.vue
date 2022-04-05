@@ -1,11 +1,13 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <el-aside width="210px">
-        <NavMenu></NavMenu>
+      <el-aside :width="isCollapse ? '60px' : '210px'">
+        <NavMenu :collapse="isCollapse"></NavMenu>
       </el-aside>
       <el-container class="page">
-        <el-header class="page-header">Header</el-header>
+        <el-header class="page-header">
+          <NavHeader @foldChange="handleFoldChange"></NavHeader>
+        </el-header>
         <el-main class="page-content">Main</el-main>
       </el-container>
     </el-container>
@@ -13,13 +15,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import NavMenu from '@/components/nav-menu'
+import NavHeader from '@/components/nav-header'
 
 export default defineComponent({
-  components: { NavMenu },
+  components: { NavMenu, NavHeader },
   setup() {
-    return {}
+    // 存放是否折叠菜单栏变量
+    const isCollapse = ref(false)
+    // 如果监听到子组件点了折叠菜单图标，就更新isCollapse
+    const handleFoldChange = (isFold: boolean) => {
+      isCollapse.value = isFold
+    }
+    return { handleFoldChange, isCollapse }
   }
 })
 </script>
