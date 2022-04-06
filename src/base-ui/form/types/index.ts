@@ -10,3 +10,10 @@ export interface IFormItem {
   // 针对特殊的属性
   otherOptions?: any
 }
+
+export interface IForm {
+  formItems: IFormItem[]
+  labelWidth?: string
+  colLayout: any
+  itemLayout: any
+}
