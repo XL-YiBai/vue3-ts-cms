@@ -83,7 +83,7 @@ class XLRequest {
   }
 
   // 使用XLRequestConfig类型，让单个请求也能接收拦截器对象interceptors
-  request<T>(config: XLRequestConfig<T>): Promise<T> {
+  request<T = any>(config: XLRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 判断是否传入请求拦截器，如果有，就执行该拦截器，拦截器返回的结果也是config配置对象
       if (config.interceptors?.requestInterceptor) {
@@ -116,19 +116,19 @@ class XLRequest {
     })
   }
 
-  get<T>(config: XLRequestConfig<T>): Promise<T> {
+  get<T = any>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: XLRequestConfig<T>): Promise<T> {
+  post<T = any>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
 
-  delete<T>(config: XLRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T>(config: XLRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: XLRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
