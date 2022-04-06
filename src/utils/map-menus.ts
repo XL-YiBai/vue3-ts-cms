@@ -1,3 +1,4 @@
+import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
 
 let firstMenu: any = null
@@ -43,6 +44,58 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   return routes
 }
 
+// 根据菜单信息，和当前路径，获取面包屑（即当前菜单层级）
+export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
+  // 用于保存菜单层级breadcrumbs，比如 系统管理/用户管理
+  const breadcrumbs: IBreadcrumb[] = []
+  pathMapToMenu(userMenus, currentPath, breadcrumbs)
+
+  return breadcrumbs
+}
+
+// 根据菜单信息，和当前所在路径，匹配出对应的菜单项
+export function pathMapToMenu(
+  userMenus: any[],
+  currentPath: string,
+  breadcrumbs?: IBreadcrumb[]
+): any {
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        // 如果传了breadcrumbs参数，就保存菜单层级，先保存父级菜单，再保存子级菜单
+        breadcrumbs?.push({ name: menu.name })
+        breadcrumbs?.push({ name: findMenu.name })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
+
+// 【注意】：下面的写法有很多重复的代码，所以可以抽离写成上面的函数写法
+/* export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
+  // 用于保存菜单层级breadcrumbs，比如 系统管理/用户管理
+  const breadcrumbs: IBreadcrumb[] = []
+
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        // 先保存父级菜单，再保存子级菜单
+        breadcrumbs.push({ name: menu.name, path: menu.url })
+        breadcrumbs.push({ name: findMenu.name, path: findMenu.url })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+
+  return breadcrumbs
+}
+
 // 根据菜单信息，和当前所在路径，匹配出对应的菜单项
 export function pathMapToMenu(userMenus: any[], currentPath: string): any {
   for (const menu of userMenus) {
@@ -55,6 +108,6 @@ export function pathMapToMenu(userMenus: any[], currentPath: string): any {
       return menu
     }
   }
-}
+} */
 
 export { firstMenu }
