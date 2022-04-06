@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import localCache from '@/utils/cache'
+import { firstMenu } from '@/utils/map-menus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -40,6 +41,11 @@ router.beforeEach((to) => {
     if (!token) {
       return '/login'
     }
+  }
+
+  // 如果路径是到首页/main，此时没有匹配的菜单项，我们就跳转到第一个菜单的内容
+  if (to.path === '/main') {
+    return firstMenu.url
   }
 })
 

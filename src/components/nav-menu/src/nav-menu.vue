@@ -5,7 +5,7 @@
       <span class="title" v-if="!collapse">Vue3+TS</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical-demo"
       :collapse="collapse"
       background-color="#0c2135"
@@ -54,10 +54,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store/index'
 import { Monitor, Setting, Goods, ChatLineRound } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
 
 export default defineComponent({
   components: { Monitor, Setting, Goods, ChatLineRound },
@@ -68,16 +69,26 @@ export default defineComponent({
     }
   },
   setup() {
+    // store
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
+    // router
     const router = useRouter()
+    const route = useRoute()
+    const currentPath = route.path
 
+    // 数据
+    // 拿到当前所在路径的菜单信息，取菜单id给defaultValue，从而动态决定左侧哪个菜单处于高亮选中状态
+    const menu = pathMapToMenu(userMenus.value, currentPath)
+    const defaultValue = ref(menu.id + '')
+
+    // 事件处理
     const handleMenuItemClick = (item: any) => {
       router.push({
         path: item.url ?? '/not-found'
       })
     }
-    return { userMenus, handleMenuItemClick }
+    return { userMenus, defaultValue, handleMenuItemClick }
   }
 })
 </script>
