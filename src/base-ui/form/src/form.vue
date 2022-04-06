@@ -17,6 +17,7 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"
+                  v-model="formData[`${item.field}`]"
                 ></el-input>
               </template>
               <template v-else-if="item.type === 'select'">
@@ -24,6 +25,7 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
+                  v-model="formData[`${item.field}`]"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -37,6 +39,7 @@
                 <el-date-picker
                   style="width: 100%"
                   v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -48,12 +51,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFormItem } from '../types'
 
 export default defineComponent({
   // 接收配置参数
   props: {
+    // 该对象用于存取表单输入的数据
+    modelValue: {
+      type: Object,
+      require: true
+    },
     // 接收form表单各个item项的配置信息
     formItems: {
       type: Array as PropType<IFormItem[]>,
@@ -73,16 +81,31 @@ export default defineComponent({
     colLayout: {
       type: Object,
       default: () => ({
-        xl: 6,
-        lg: 8,
-        md: 12,
-        sm: 24,
-        xs: 24
+        xl: 6, // ≥1920px
+        lg: 8, // ≥1200px
+        md: 12, // ≥992px
+        sm: 24, // ≥768px
+        xs: 24 // <768px
       })
     }
   },
-  setup() {
-    return {}
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    // 拷贝一份父组件使用v-model传递进来的formData
+    const formData = ref({ ...props.modelValue })
+
+    // 深度监听自己组件formData的修改，然后emit通知父组件修改它的formData达到表单双向绑定的效果
+    watch(
+      formData,
+      (newValue) => {
+        emit('update:modelValue', newValue)
+      },
+      {
+        deep: true
+      }
+    )
+
+    return { formData }
   }
 })
 </script>
