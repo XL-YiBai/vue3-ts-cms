@@ -13,6 +13,7 @@ import { defineComponent } from 'vue'
 
 import PageSearch from '@/components/page-search'
 import PageContent from '@/components/page-content'
+
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 
