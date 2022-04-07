@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <XlTable :listData="userList" v-bind="contentTableConfig">
+    <XlTable :listData="dataList" v-bind="contentTableConfig">
       <!-- 表格头部header右侧的控制区域的插槽 -->
       <template #headerHandler>
         <el-button type="primary" size="default">新建用户</el-button>
@@ -51,22 +51,30 @@ export default defineComponent({
     contentTableConfig: {
       type: Object,
       require: true
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
-  setup() {
+  setup(props) {
     const store = useStore()
     // 调用dispatch获取该页面的数据，存到vuex
     store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
+      pageName: props.pageName,
       queryInfo: {
         offset: 0,
         size: 10
       }
     })
 
-    const userList = computed(() => store.state.system.userList)
+    // 因为这个getters在system模块中，所以需要这样获取，并且返回的是一个函数，
+    // 可以传入pageName调用返回的函数，从而获取到对应的数据
+    const dataList = computed(() =>
+      store.getters[`system/pageListData`](props.pageName)
+    )
     // const userCount = computed(() => store.state.system.userCount)
-    return { userList }
+    return { dataList }
   }
 })
 </script>
