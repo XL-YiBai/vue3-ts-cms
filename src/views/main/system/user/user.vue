@@ -3,12 +3,17 @@
     <PageSearch :searchFormConfig="searchFormConfig"></PageSearch>
 
     <div class="content">
-      <XlTable :listData="userList" :propList="propList">
+      <XlTable
+        :listData="userList"
+        :propList="propList"
+        :showIndexColumn="showIndexColumn"
+        :showSelectColumn="showSelectColumn"
+      >
         <!-- 通过具名插槽指定每一列插入内容，通过作用域插槽拿到每一项的内容，从而对数据格式化展示 -->
         <template #status="scope">
           <el-button
             plain
-            size="mini"
+            size="small"
             :type="scope.row.enable ? 'success' : 'danger'"
           >
             {{ scope.row.enable ? '启用' : '禁用' }}
@@ -20,6 +25,16 @@
         <template #updateAt="scope">
           <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
         </template>
+        <template #handler>
+          <div class="handler-btns">
+            <el-button size="small" type="text"
+              ><el-icon><edit /></el-icon>编辑</el-button
+            >
+            <el-button size="small" type="text"
+              ><el-icon><delete /></el-icon>删除</el-button
+            >
+          </div>
+        </template>
       </XlTable>
     </div>
   </div>
@@ -27,6 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
+import { Edit, Delete } from '@element-plus/icons-vue'
 import { useStore } from '@/store'
 import PageSearch from '@/components/page-search'
 // 引入对于Form表单的配置文件
@@ -35,7 +51,7 @@ import XlTable from '@/base-ui/table'
 
 export default defineComponent({
   name: 'user',
-  components: { PageSearch, XlTable },
+  components: { PageSearch, XlTable, Edit, Delete },
   setup() {
     const store = useStore()
     // 调用dispatch获取该页面的数据，存到vuex
@@ -67,10 +83,23 @@ export default defineComponent({
         label: '更新时间',
         minWidth: '250',
         slotName: 'updateAt'
-      }
+      },
+      { label: '操作', minWidth: '120', slotName: 'handler' }
     ]
 
-    return { searchFormConfig, userList, propList }
+    // 是否展示序号
+    const showIndexColumn = true
+
+    // 控制展示是否选中的列表项，checkbox
+    const showSelectColumn = true
+
+    return {
+      searchFormConfig,
+      userList,
+      propList,
+      showIndexColumn,
+      showSelectColumn
+    }
   }
 })
 </script>

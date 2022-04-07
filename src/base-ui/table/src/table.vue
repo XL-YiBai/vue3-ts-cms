@@ -1,6 +1,24 @@
 <template>
   <div class="xl-table">
-    <el-table :data="listData" border style="width: 100%">
+    <el-table
+      :data="listData"
+      border
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        v-if="showSelectColumn"
+        type="selection"
+        align="center"
+        width="60"
+      ></el-table-column>
+      <el-table-column
+        v-if="showIndexColumn"
+        type="index"
+        label="序号"
+        align="center"
+        width="80"
+      ></el-table-column>
       <template v-for="propItem in propList" :key="propItem.prop">
         <el-table-column v-bind="propItem" align="center">
           <!-- 可以使用插槽在表格插入想传入的内容，这里会通过作用域插槽把每一行的内容传递出来 -->
@@ -32,10 +50,24 @@ export default defineComponent({
     propList: {
       type: Array,
       required: true
+    },
+    // 是否展示每一项的序号
+    showIndexColumn: {
+      type: Boolean,
+      default: false
+    },
+    // 控制展示每一项的选中，checkbox
+    showSelectColumn: {
+      type: Boolean,
+      default: false
     }
   },
-  setup() {
-    return {}
+  emits: ['selectionChange'],
+  setup(props, { emit }) {
+    const handleSelectionChange = (value: any) => {
+      emit('selectionChange', value)
+    }
+    return { handleSelectionChange }
   }
 })
 </script>
