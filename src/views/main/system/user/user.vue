@@ -5,10 +5,18 @@
     <div class="content">
       <XlTable
         :listData="userList"
+        :title="title"
         :propList="propList"
         :showIndexColumn="showIndexColumn"
         :showSelectColumn="showSelectColumn"
       >
+        <!-- 表格头部header右侧的控制区域的插槽 -->
+        <template #headerHandler>
+          <el-button type="primary" size="default">新建用户</el-button>
+          <el-button
+            ><el-icon><refresh /></el-icon>刷新</el-button
+          >
+        </template>
         <!-- 通过具名插槽指定每一列插入内容，通过作用域插槽拿到每一项的内容，从而对数据格式化展示 -->
         <template #status="scope">
           <el-button
@@ -42,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { Edit, Delete } from '@element-plus/icons-vue'
+import { Edit, Delete, Refresh } from '@element-plus/icons-vue'
 import { useStore } from '@/store'
 import PageSearch from '@/components/page-search'
 // 引入对于Form表单的配置文件
@@ -51,7 +59,7 @@ import XlTable from '@/base-ui/table'
 
 export default defineComponent({
   name: 'user',
-  components: { PageSearch, XlTable, Edit, Delete },
+  components: { PageSearch, XlTable, Edit, Delete, Refresh },
   setup() {
     const store = useStore()
     // 调用dispatch获取该页面的数据，存到vuex
@@ -65,6 +73,9 @@ export default defineComponent({
 
     const userList = computed(() => store.state.system.userList)
     const userCount = computed(() => store.state.system.userCount)
+
+    // 数据列表的表头名称
+    const title = '用户列表'
 
     // 每一列的配置信息
     const propList = [
@@ -96,6 +107,7 @@ export default defineComponent({
     return {
       searchFormConfig,
       userList,
+      title,
       propList,
       showIndexColumn,
       showSelectColumn

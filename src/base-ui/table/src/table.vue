@@ -1,5 +1,15 @@
 <template>
   <div class="xl-table">
+    <div class="header">
+      <slot name="header">
+        <!-- 表格名称 -->
+        <div class="title">{{ title }}</div>
+        <!-- 表格头部右侧可传入操作的按钮的插槽 -->
+        <div class="handler">
+          <slot name="headerHandler"></slot>
+        </div>
+      </slot>
+    </div>
     <el-table
       :data="listData"
       border
@@ -33,6 +43,22 @@
         </el-table-column>
       </template>
     </el-table>
+    <div class="footer">
+      <slot name="footer">
+        <el-pagination
+          v-model:currentPage="currentPage4"
+          v-model:page-size="pageSize4"
+          :page-sizes="[100, 200, 300, 400]"
+          :small="small"
+          :disabled="disabled"
+          :background="background"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -41,6 +67,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
+    // 数据表格头部的名称
+    title: {
+      type: String,
+      default: ''
+    },
     // 列表的数据信息
     listData: {
       type: Array,
@@ -72,4 +103,29 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.header {
+  display: flex;
+  height: 45px;
+  padding: 0 5px;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .handler {
+    align-items: center;
+  }
+}
+
+.footer {
+  margin-top: 15px;
+
+  .el-pagination {
+    text-align: right;
+  }
+}
+</style>
