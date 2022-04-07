@@ -7,7 +7,7 @@
       </template>
       <template #footer>
         <div class="handle-btns">
-          <el-button
+          <el-button @click="handleResetClick"
             ><el-icon><refresh-left /></el-icon>重置</el-button
           >
           <el-button type="primary"
@@ -34,16 +34,25 @@ export default defineComponent({
   },
   components: { XlForm, RefreshLeft, Search },
 
-  setup() {
+  setup(props) {
     // 定义表单的数据，使用v-model传递给子组件XLForm做双向绑定，拿到表单数据
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
-    return { formData }
+    // 双向绑定的属性应该是由传入配置文件中的field来决定的
+    // 1. 优化一：formData中的属性应该动态来决定
+    const formItems = props.searchFormConfig?.formItems ?? []
+    const formOriginData: any = {}
+    // 取出传入的每一项的field值作为key，放到formOriginData因为不同页面的使用的各个表单字段名时不一样的
+    for (const item of formItems) {
+      formOriginData[item.field] = ''
+    }
+    // 根据formOriginData生成响应式对象formData用于做双向数据绑定
+    const formData = ref(formOriginData)
+
+    // 2. 优化二：
+    const handleResetClick = () => {
+      formData.value = formOriginData
+    }
+
+    return { formData, handleResetClick }
   }
 })
 </script>

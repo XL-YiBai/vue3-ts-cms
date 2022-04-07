@@ -100,6 +100,14 @@ export default defineComponent({
     // 拷贝一份父组件使用v-model传递进来的formData
     const formData = ref({ ...props.modelValue })
 
+    // 监听外界modelValue的变化，一旦点击了表单重置按钮，外面会重置，这里就监听到，然后也对formData做重置
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        formData.value = { ...newValue }
+      }
+    )
+
     // 深度监听自己组件formData的修改，然后emit通知父组件修改它的formData达到表单双向绑定的效果
     watch(
       formData,
