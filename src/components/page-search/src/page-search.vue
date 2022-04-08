@@ -10,7 +10,7 @@
           <el-button @click="handleResetClick"
             ><el-icon><refresh-left /></el-icon>重置</el-button
           >
-          <el-button type="primary"
+          <el-button type="primary" @click="handleQueryClick"
             ><el-icon><search /></el-icon>搜索</el-button
           >
         </div>
@@ -32,9 +32,10 @@ export default defineComponent({
       require: true
     }
   },
+  emits: ['resetBtnClick', 'queryBtnClick'],
   components: { XlForm, RefreshLeft, Search },
 
-  setup(props) {
+  setup(props, { emit }) {
     // 定义表单的数据，使用v-model传递给子组件XLForm做双向绑定，拿到表单数据
     // 双向绑定的属性应该是由传入配置文件中的field来决定的
     // 1. 优化一：formData中的属性应该动态来决定
@@ -47,15 +48,24 @@ export default defineComponent({
     // 根据formOriginData生成响应式对象formData用于做双向数据绑定
     const formData = ref(formOriginData)
 
-    // 2. 优化二：
+    // 2. 优化二：当用户点击重置，就让属性都清空还原
     const handleResetClick = () => {
       // for (const key in formOriginData) {
       //   formData.value[`${key}`] = formOriginData[key]
       // }
+      // 属性都清空还原
       formData.value = formOriginData
+      // 向外传递事件，从而重新发送请求获取所有数据
+      emit('resetBtnClick')
     }
 
-    return { formData, handleResetClick }
+    // 3. 优化三：当用户点击搜索
+    const handleQueryClick = () => {
+      // 向外传递事件，并把当前搜索框搜集的数据携带过去，发送网络请求获取搜索匹配的数据
+      emit('queryBtnClick', formData.value)
+    }
+
+    return { formData, handleResetClick, handleQueryClick }
   }
 })
 </script>

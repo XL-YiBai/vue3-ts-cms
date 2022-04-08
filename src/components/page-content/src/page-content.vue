@@ -60,21 +60,25 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     // 调用dispatch获取该页面的数据，存到vuex
-    store.dispatch('system/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    const getPageData = (queryInfo: any = {}) => {
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10,
+          ...queryInfo
+        }
+      })
+    }
+    getPageData()
 
     // 因为这个getters在system模块中，所以需要这样获取，并且返回的是一个函数，
-    // 可以传入pageName调用返回的函数，从而获取到对应的数据
+    // 可以传入pageName调用返回的函数，从Vuex中获取到对应的数据
     const dataList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     )
     // const userCount = computed(() => store.state.system.userCount)
-    return { dataList }
+    return { dataList, getPageData }
   }
 })
 </script>
