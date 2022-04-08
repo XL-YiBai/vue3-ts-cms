@@ -15,6 +15,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -43,8 +44,8 @@
         </el-table-column>
       </template>
     </el-table>
-    <slot name="footer">
-      <div class="el-pagination">
+    <div class="footer" v-if="showFooter">
+      <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -54,8 +55,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="listCount"
         />
-      </div>
-    </slot>
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -98,6 +99,16 @@ export default defineComponent({
     page: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    // 控制是否可以多级展开，有子项
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    // 控制是否展示底部footer(分页器)
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['selectionChange', 'update:page'],
