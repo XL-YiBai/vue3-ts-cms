@@ -110,4 +110,24 @@ export function pathMapToMenu(userMenus: any[], currentPath: string): any {
   }
 } */
 
+// 拿到当前用户菜单中按钮权限信息，保存到数组中，return出去。(之后在vuex的login.ts中changeUserMenus调用)
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: string[] = []
+
+  // 定义递归遍历函数
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      // 只要type是1或者2就继续遍历
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? [])
+        // 当type为3时，可以获取到权限了，就把权限push到permissions中
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+  _recurseGetPermission(userMenus)
+  return permissions
+}
+
 export { firstMenu }

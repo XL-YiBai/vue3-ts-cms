@@ -8,7 +8,9 @@
     >
       <!-- 1. 表格头部header右侧的控制区域的插槽 -->
       <template #headerHandler>
-        <el-button type="primary" size="default">新建用户</el-button>
+        <el-button v-if="isCreate" type="primary" size="default"
+          >新建用户</el-button
+        >
         <el-button
           ><el-icon><refresh /></el-icon>刷新</el-button
         >
@@ -33,10 +35,10 @@
       </template>
       <template #handler>
         <div class="handler-btns">
-          <el-button size="small" type="text"
+          <el-button v-if="isUpdate" size="small" type="text"
             ><el-icon><edit /></el-icon>编辑</el-button
           >
-          <el-button size="small" type="text"
+          <el-button v-if="isDelete" size="small" type="text"
             ><el-icon><delete /></el-icon>删除</el-button
           >
         </div>
@@ -62,6 +64,7 @@
 import { defineComponent, computed, ref, watch } from 'vue'
 import { Edit, Delete, Refresh } from '@element-plus/icons-vue'
 import { useStore } from '@/store'
+import { usePermission } from '@/hooks/use-permission'
 
 import XlTable from '@/base-ui/table'
 
@@ -80,6 +83,12 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
 
+    // 0. 获取当前页面的操作的权限，需要根据权限展示相应操作按钮
+    const isCreate = usePermission(props.pageName, 'create')
+    const isUpdate = usePermission(props.pageName, 'update')
+    const isDelete = usePermission(props.pageName, 'delete')
+    const isQuery = usePermission(props.pageName, 'query')
+
     // 1. 双向绑定分页信息pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     // 当分页器页数和当前每页展示数据条数更改时，重新发送请求获取数据
@@ -87,6 +96,8 @@ export default defineComponent({
 
     // 2. 发送网络请求：调用dispatch获取该页面的数据，存到vuex
     const getPageData = (queryInfo: any = {}) => {
+      // 如果没有查询权限，就return
+      if (!isQuery) return
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
@@ -120,7 +131,16 @@ export default defineComponent({
       }
     )
 
-    return { dataList, getPageData, dataCount, pageInfo, otherPropSlots }
+    return {
+      dataList,
+      getPageData,
+      dataCount,
+      pageInfo,
+      otherPropSlots,
+      isCreate,
+      isUpdate,
+      isDelete
+    }
   }
 })
 </script>
