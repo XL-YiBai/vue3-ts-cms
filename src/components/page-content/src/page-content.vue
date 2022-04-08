@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <XlTable :listData="dataList" v-bind="contentTableConfig">
+    <XlTable
+      :listData="dataList"
+      :listCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- 表格头部header右侧的控制区域的插槽 -->
       <template #headerHandler>
         <el-button type="primary" size="default">新建用户</el-button>
@@ -39,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { Edit, Delete, Refresh } from '@element-plus/icons-vue'
 import { useStore } from '@/store'
 
@@ -59,13 +64,20 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
+
+    // 双向绑定分页信息pageInfo
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    // 当分页器页数和当前每页展示数据条数更改时，重新发送请求获取数据
+    watch(pageInfo, () => getPageData())
+
     // 调用dispatch获取该页面的数据，存到vuex
     const getPageData = (queryInfo: any = {}) => {
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
+          // 偏移量为当前所在第几页 乘以 每一页展示多少条数据
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
           ...queryInfo
         }
       })
@@ -77,8 +89,10 @@ export default defineComponent({
     const dataList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     )
-    // const userCount = computed(() => store.state.system.userCount)
-    return { dataList, getPageData }
+    const dataCount = computed(() =>
+      store.getters[`system/pageListCount`](props.pageName)
+    )
+    return { dataList, getPageData, dataCount, pageInfo }
   }
 })
 </script>

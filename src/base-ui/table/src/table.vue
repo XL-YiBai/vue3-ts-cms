@@ -48,14 +48,13 @@
         <el-pagination
           v-model:currentPage="currentPage4"
           v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="listCount"
         />
       </slot>
     </div>
@@ -77,6 +76,11 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    // 需要展示的数据总条数
+    listCount: {
+      type: Number,
+      default: 0
+    },
     // 列表的表头名称配置信息
     propList: {
       type: Array,
@@ -91,14 +95,29 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    // 外界双向绑定有关分页相关的数据
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }
-    return { handleSelectionChange }
+
+    // 当分页器的当前页发生变化时，通知外面更改pageInfo
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
+    }
+    // 每一页展示条数改变时，一样通知外面更改
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+
+    return { handleSelectionChange, handleSizeChange, handleCurrentChange }
   }
 })
 </script>
