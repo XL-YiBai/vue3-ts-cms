@@ -15,13 +15,14 @@
     <PageModal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      :modalConfig="modalConfig"
+      :modalConfig="modalConfigRef"
     ></PageModal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useStore } from '@/store'
 
 import PageSearch from '@/components/page-search'
 import PageContent from '@/components/page-content'
@@ -44,6 +45,7 @@ export default defineComponent({
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
     // pageModal相关的hook逻辑
+    // 1. 处理密码项是否展示的逻辑
     // 点击新建按钮时的回调
     const newCallback = () => {
       // 找到密码的对应配置，设置显示（新建时需要显示密码）
@@ -60,6 +62,30 @@ export default defineComponent({
       )
       passwordItem!.isHidden = true
     }
+
+    // 2. 给弹出对话框组件PageModal，动态添加部门和角色列表
+    const store = useStore()
+    // 因为在当前页面刷新时，数据还未返回，此时页面还是用的原始数据options还是空数组，所以要使用computed包裹，这样modalConfig更新之后页面数据会重新渲染
+    const modalConfigRef = computed(() => {
+      // 2.1 部门处理
+      const departmentItem = modalConfig.formItems.find(
+        (item) => item.field === 'departmentId'
+      )
+      // 因为显示选择项时，是el-select组件，要传入title和id，使用map转换获取的部门数组为title和id的形式
+      departmentItem!.options = store.state.entireDepartment.map((item) => {
+        return { title: item.name, value: item.id }
+      })
+      // 2.2 角色处理
+      const roleItem = modalConfig.formItems.find(
+        (item) => item.field === 'roleId'
+      )
+      roleItem!.options = store.state.entireDepartment.map((item) => {
+        return { title: item.name, value: item.id }
+      })
+      return modalConfig
+    })
+
+    // 3. 调用PageModal相关的hook获取公共的变量和函数
     // 将回调传给usePageModal，进而传给里面处理新建(handleNewData,handleEditData)和编辑的函数去回调
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newCallback, editCallback)
@@ -70,7 +96,7 @@ export default defineComponent({
       pageContentRef,
       handleResetClick,
       handleQueryClick,
-      modalConfig,
+      modalConfigRef,
       handleNewData,
       handleEditData,
       pageModalRef,

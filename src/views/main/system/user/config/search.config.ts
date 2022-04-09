@@ -2,7 +2,7 @@ import { IForm } from '@/base-ui/form'
 // XlForm组件的配置文件
 export const searchFormConfig: IForm = {
   labelWidth: '120px',
-  itemLayout: {
+  itemStyle: {
     padding: '10px 40px'
   },
   colLayout: {
