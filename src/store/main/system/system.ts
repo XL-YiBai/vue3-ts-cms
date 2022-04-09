@@ -2,7 +2,7 @@ import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
 
-import { getPageListData } from '@/service/main/system/system'
+import { getPageListData, deletePageData } from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -19,6 +19,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     }
   },
   actions: {
+    // 获取页面要展示列表数据的action
     async getPageListAction({ commit }, payload: any) {
       // 1. 获取pageUrl
       const pageName = payload.pageName
@@ -55,6 +56,25 @@ const systemModule: Module<ISystemState, IRootState> = {
       //     commit(`changeRoleList`, list)
       //     commit(`changeRoleount`, totalCount)
       // }
+    },
+
+    // 删除页面某个数据的action
+    async deletePageDataAction({ dispatch }, payload: any) {
+      // 1. 获取pageName和id
+      // 需要传入pageName 用于拼接 url（如/users）
+      // 需要传入id指定删除哪一个数据（如/users/id）
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      // 2. 调用删除网络请求
+      await deletePageData(pageUrl)
+      // 3. 重新请求最新的数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   },
   getters: {

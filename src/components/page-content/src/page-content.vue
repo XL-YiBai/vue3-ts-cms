@@ -33,12 +33,16 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handler-btns">
           <el-button v-if="isUpdate" size="small" type="text"
             ><el-icon><edit /></el-icon>编辑</el-button
           >
-          <el-button v-if="isDelete" size="small" type="text"
+          <el-button
+            v-if="isDelete"
+            size="small"
+            type="text"
+            @click="handleDeleteClick(scope.row)"
             ><el-icon><delete /></el-icon>删除</el-button
           >
         </div>
@@ -67,6 +71,7 @@ import { useStore } from '@/store'
 import { usePermission } from '@/hooks/use-permission'
 
 import XlTable from '@/base-ui/table'
+import { deletePageData } from '@/service/main/system/system'
 
 export default defineComponent({
   components: { XlTable, Edit, Delete, Refresh },
@@ -131,15 +136,25 @@ export default defineComponent({
       }
     )
 
+    // 5. 删除按钮的操作
+    const handleDeleteClick = (item: any) => {
+      console.log(item)
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+
     return {
       dataList,
-      getPageData,
       dataCount,
       pageInfo,
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      getPageData,
+      handleDeleteClick
     }
   }
 })
