@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import PageModal from '@/components/page-modal'
 
-type CallbackFn = () => void
+type CallbackFn = (item?: any) => void
 
 export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
   // 拿到PageModal实例
@@ -26,7 +26,7 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
       pageModalRef.value.dialogVisible = true
     }
     // 当传入了editCb时，说明页面点击编辑操作还有一些额外的操作回调，比如设置密码项隐藏
-    editCb && editCb()
+    editCb && editCb(item)
   }
 
   return [pageModalRef, defaultInfo, handleNewData, handleEditData]

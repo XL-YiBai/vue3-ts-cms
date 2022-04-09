@@ -130,4 +130,23 @@ export function mapMenusToPermissions(userMenus: any[]) {
   return permissions
 }
 
+// 获取菜单树中，叶子节点的key
+export function mapMenusLeafKeys(menuList: any[]) {
+  const leafKeys: number[] = []
+
+  const _recurseGetLeaf = (menuList: any[]) => {
+    for (const menu of menuList) {
+      // 有子节点，就继续递归
+      if (menu.children) {
+        _recurseGetLeaf(menu.children)
+      } else {
+        leafKeys.push(menu.id)
+      }
+    }
+  }
+  _recurseGetLeaf(menuList)
+
+  return leafKeys
+}
+
 export { firstMenu }
