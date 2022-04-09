@@ -13,9 +13,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确定</el-button
-          >
+          <el-button type="primary" @click="handleConfirmClick">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -24,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 import XlForm from '@/base-ui/form'
 
@@ -38,6 +37,10 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
@@ -56,7 +59,29 @@ export default defineComponent({
       }
     )
 
-    return { dialogVisible, formData }
+    // 点击确定按钮的逻辑
+    const store = useStore()
+    const handleConfirmClick = () => {
+      // 隐藏弹出的对话框
+      dialogVisible.value = false
+      // 当defaultInfo为空对象时，说明是新建，否则是编辑
+      if (Object.keys(props.defaultInfo).length) {
+        // 编辑时
+        store.dispatch('system/editPageDataAction', {
+          pageName: props.pageName,
+          editData: { ...formData.value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        // 新建时
+        store.dispatch('system/createPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...formData.value }
+        })
+      }
+    }
+
+    return { dialogVisible, formData, handleConfirmClick }
   }
 })
 </script>
