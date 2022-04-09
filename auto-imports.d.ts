@@ -34,5 +34,6 @@ declare global {
   const ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
   const ElTabPane: typeof import('element-plus/es')['ElTabPane']
   const ElTabs: typeof import('element-plus/es')['ElTabs']
+  const ElTree: typeof import('element-plus/es')['ElTree']
 }
 export {}

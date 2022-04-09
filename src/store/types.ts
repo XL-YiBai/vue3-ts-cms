@@ -8,6 +8,8 @@ export interface IRootState {
   entireDepartment: any[]
   // 所有角色
   entireRole: any[]
+  // 所有菜单
+  entireMenu: any[]
 }
 
 // 因为vuex对TS兼容的问题，导致使用原生useStore拿到函数返回值类型不能很好的使用符号（.）调出模块，

@@ -9,6 +9,8 @@
     >
       <!-- el-dialog的默认插槽传入XlForm表单组件 -->
       <XlForm v-bind="modalConfig" v-model="formData"></XlForm>
+      <!-- 预留一个插槽，做扩展（角色页面有使用到） -->
+      <slot></slot>
       <!-- footer具名插槽，传入底部的东西 -->
       <template #footer>
         <span class="dialog-footer">
@@ -41,6 +43,11 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
+    },
+    // 如果外界使用了插槽展示了额外数据选项，那么在点击确认时，需要拼接这些数据一并发送
+    otherInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props) {
@@ -69,14 +76,14 @@ export default defineComponent({
         // 编辑时
         store.dispatch('system/editPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formData.value },
+          editData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         // 新建时
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       }
     }
