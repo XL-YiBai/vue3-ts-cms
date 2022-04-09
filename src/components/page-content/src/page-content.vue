@@ -71,15 +71,16 @@ import { useStore } from '@/store'
 import { usePermission } from '@/hooks/use-permission'
 
 import XlTable from '@/base-ui/table'
-import { deletePageData } from '@/service/main/system/system'
 
 export default defineComponent({
   components: { XlTable, Edit, Delete, Refresh },
   props: {
+    // 对该组件的配置信息
     contentTableConfig: {
       type: Object,
       require: true
     },
+    // 页面名称
     pageName: {
       type: String,
       required: true
