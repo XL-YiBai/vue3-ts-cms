@@ -43,8 +43,26 @@ export default defineComponent({
   setup() {
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
+    // pageModal相关的hook逻辑
+    // 点击新建按钮时的回调
+    const newCallback = () => {
+      // 找到密码的对应配置，设置显示（新建时需要显示密码）
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+      passwordItem!.isHidden = false
+    }
+    // 点击编辑按钮时的回调
+    const editCallback = () => {
+      // 找到密码的对应配置，设置显示（编辑时不需要显示密码）
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+      passwordItem!.isHidden = true
+    }
+    // 将回调传给usePageModal，进而传给里面处理新建(handleNewData,handleEditData)和编辑的函数去回调
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(newCallback, editCallback)
 
     return {
       searchFormConfig,

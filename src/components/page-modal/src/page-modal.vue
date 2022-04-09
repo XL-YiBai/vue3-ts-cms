@@ -1,6 +1,12 @@
 <template>
   <div class="page-modal">
-    <el-dialog v-model="dialogVisible" title="新建用户" width="30%" center>
+    <el-dialog
+      v-model="dialogVisible"
+      title="新建用户"
+      width="30%"
+      center
+      destroy-on-close
+    >
       <!-- el-dialog的默认插槽传入XlForm表单组件 -->
       <XlForm v-bind="modalConfig" v-model="formData"></XlForm>
       <!-- footer具名插槽，传入底部的东西 -->
