@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 import XlForm from '@/base-ui/form'
 
@@ -28,11 +28,28 @@ export default defineComponent({
     modalConfig: {
       type: Object,
       required: true
+    },
+    defaultInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
-  setup() {
-    const dialogVisible = ref(true)
-    const formData = ref({})
+  setup(props) {
+    const dialogVisible = ref(false)
+    const formData = ref<any>({})
+
+    // 点击编辑按钮之后会获取当前要编辑数据，并修改defaltInfo的值，所以这里使用watch
+    watch(
+      () => props.defaultInfo,
+      (newValue) => {
+        // 最开始form表单双向绑定的数据formData是空对象，并且点击不同数据的编辑按钮，
+        // 拿到的对应数据deafultInfo也不同，所以这里根据点击编辑后传入的defaultInfo重新赋值
+        for (const item of props.modalConfig.formItems) {
+          formData.value[`${item.field}`] = newValue[`${item.field}`]
+        }
+      }
+    )
+
     return { dialogVisible, formData }
   }
 })

@@ -8,7 +8,11 @@
     >
       <!-- 1. 表格头部header右侧的控制区域的插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="default"
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="default"
+          @click="handleNewClick"
           >新建用户</el-button
         >
         <el-button
@@ -35,7 +39,11 @@
       </template>
       <template #handler="scope">
         <div class="handler-btns">
-          <el-button v-if="isUpdate" size="small" type="text"
+          <el-button
+            v-if="isUpdate"
+            size="small"
+            type="text"
+            @click="handleEditClick(scope.row)"
             ><el-icon><edit /></el-icon>编辑</el-button
           >
           <el-button
@@ -86,7 +94,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
 
     // 0. 获取当前页面的操作的权限，需要根据权限展示相应操作按钮
@@ -146,6 +155,14 @@ export default defineComponent({
       })
     }
 
+    // 监听新建和编辑按钮，向外emit事件，然后父组件再去通知另一个兄弟组件PageModal触发弹窗
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
+
     return {
       dataList,
       dataCount,
@@ -155,7 +172,9 @@ export default defineComponent({
       isUpdate,
       isDelete,
       getPageData,
-      handleDeleteClick
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     }
   }
 })
