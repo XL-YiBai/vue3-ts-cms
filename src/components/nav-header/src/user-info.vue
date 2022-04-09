@@ -10,7 +10,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item
+          <el-dropdown-item @click="handleExitClick"
             ><el-icon><circle-close-filled /></el-icon
             >退出登录</el-dropdown-item
           >
@@ -26,6 +26,8 @@
 import { defineComponent, computed } from 'vue'
 import { CircleCloseFilled } from '@element-plus/icons-vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
+import localCache from '@/utils/cache'
 
 export default defineComponent({
   components: { CircleCloseFilled },
@@ -33,7 +35,14 @@ export default defineComponent({
     const store = useStore()
     const name = computed(() => store.state.login.userInfo.name)
 
-    return { name }
+    const router = useRouter()
+    // 退出登录，删除token
+    const handleExitClick = () => {
+      localCache.deleteCache('token')
+      router.push('/main')
+    }
+
+    return { name, handleExitClick }
   }
 })
 </script>

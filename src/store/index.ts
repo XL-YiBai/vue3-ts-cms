@@ -51,7 +51,8 @@ const store = createStore<IRootState>({
 // 刷新之后，需要重新获取本地缓存的vuex数据
 export function setupStore() {
   store.dispatch('login/loadLocalLogin')
-  store.dispatch('getInitialDataAction')
+  // 这个请求需要token，而上面获取token也是异步的，不一定先到达，放在这里不合适，已经移到store/login.ts确保token获取到的逻辑中了
+  // store.dispatch('getInitialDataAction')
 }
 
 // 单独封装一个自己的useSotre，调用vuex原生的useStore返回一个store，
