@@ -14,7 +14,9 @@
 
     <el-row :gutter="10" class="content-row">
       <el-col :span="12">
-        <XlCard title="分类商品的销量"></XlCard>
+        <XlCard title="分类商品的销量">
+          <BaseEchart :options="options"></BaseEchart>
+        </XlCard>
       </el-col>
       <el-col :span="12">
         <XlCard title="分类商品的收藏"></XlCard>
@@ -28,16 +30,35 @@ import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
 
 import XlCard from '@/base-ui/card'
+import BaseEchart from '@/base-ui/echart'
 
 export default defineComponent({
   name: 'dashboard',
   components: {
-    XlCard
+    XlCard,
+    BaseEchart
   },
   setup() {
     const store = useStore()
     store.dispatch('dashboard/getDashboardDataAction')
-    return {}
+
+    const options = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar'
+        }
+      ]
+    }
+
+    return { options }
   }
 })
 </script>
