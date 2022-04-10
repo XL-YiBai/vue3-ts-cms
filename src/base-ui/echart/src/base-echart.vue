@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 // 尝鲜，使用setup的新写法，直接在script中写setup内容
-import { ref, onMounted, defineProps, withDefaults } from 'vue'
+import { ref, onMounted, defineProps, withDefaults, watchEffect } from 'vue'
 import { EChartsOption } from 'echarts'
 import useEchart from '../hooks/useEchart'
 
@@ -28,7 +28,10 @@ const echartDivRef = ref<HTMLElement>()
 
 onMounted(() => {
   const { setOptions } = useEchart(echartDivRef.value!)
-  setOptions(props.options)
+  // 当options发生改变，重新调用setOptions，重新绘制Echarts的内容
+  watchEffect(() => {
+    setOptions(props.options)
+  })
 })
 </script>
 
