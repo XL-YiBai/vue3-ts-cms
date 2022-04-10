@@ -1,5 +1,10 @@
 import * as echarts from 'echarts'
 
+import ChanaMapData from '../data/china.json'
+
+// 注册中国地图的数据
+echarts.registerMap('china', ChanaMapData)
+
 // 封装对echart初始化的操作
 export default function (el: HTMLElement) {
   // 接收一个dom，生成一个echart实例
