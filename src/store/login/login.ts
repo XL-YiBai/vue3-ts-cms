@@ -6,6 +6,7 @@ import {
   requestUserMenuByRoleId
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
+import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/map-menus'
 import router from '@/router/index'
 
 import { IAccount } from '@/service/login/type'
@@ -19,17 +20,21 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   actions: {
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // 1. 实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       // 把token保存到localStorage做持久化存储
       localCache.setCache('token', token)
+
+      // 发送初始化的请求（获取完整的角色和部门信息，role/department），因为需要拿到token之后才能发请求，所以放在这个位置
+      dispatch('getInitialDataAction', null, { root: true }) // 在模块中调用根state的action
 
       // 2. 登录成功后请求用户信息的数据
       const userInfoResult = await requestUserInfoById(id)
@@ -49,10 +54,13 @@ const loginModule: Module<ILoginState, IRootState> = {
       router.push('/main')
     },
     // 刷新之后，Vuex数据消失，需要重新加载本地缓存中的数据
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache('token')
       if (token) {
         commit('changeToken', token)
+
+        // 发送初始化的请求（获取完整的角色和部门信息，role/department），因为需要拿到token之后才能发请求，所以放在这个位置
+        dispatch('getInitialDataAction', null, { root: true }) // 在模块中调用根state的action
       }
       const userInfo = localCache.getCache('userInfo')
       if (userInfo) {
@@ -73,6 +81,18 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // 根据userMenus中菜单的url字段 映射出需要的路由规则 routes
+      const routes = mapMenusToRoutes(userMenus)
+
+      // 遍历 routes，将所有路由添加到 router.main.children中
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
+
+      // 获取用户按钮的权限
+      const permissions = mapMenusToPermissions(userMenus)
+      state.permissions = permissions
     }
   },
   getters: {}

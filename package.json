@@ -13,6 +13,7 @@
     "@element-plus/icons-vue": "^1.1.4",
     "axios": "^0.26.1",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.0",
     "element-plus": "^2.1.7",
     "normalize.css": "^8.0.1",
     "vue": "^3.0.0",
