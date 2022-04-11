@@ -1,6 +1,8 @@
 import { Module } from 'vuex'
 
 import {
+  getAmountList,
+  getGoodsSaleTop10,
   getCategoryGoodsCount,
   getCategoryGoodsSale,
   getCategoryGoodsFavor,
@@ -14,6 +16,8 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
   namespaced: true,
   state() {
     return {
+      topPanelDatas: [],
+      goodsSaleTop10: [],
       // 不同分类商品的个数
       categoryGoodsCount: [],
       // 不同分类的商品销量
@@ -25,6 +29,12 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
     }
   },
   mutations: {
+    changeTopPanelDatas(state, list) {
+      state.topPanelDatas = list.data
+    },
+    changeGoodsSaleTop10(state, list) {
+      state.goodsSaleTop10 = list.data
+    },
     changeCategoryGoodsCount(state, list) {
       state.categoryGoodsCount = list
     },
@@ -40,12 +50,21 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
   },
   actions: {
     async getDashboardDataAction({ commit }) {
+      const resultTopPanelDatas = await getAmountList()
+      commit('changeTopPanelDatas', resultTopPanelDatas)
+
+      const saleTop10 = await getGoodsSaleTop10()
+      commit('changeGoodsSaleTop10', saleTop10)
+
       const categoryCountResult = await getCategoryGoodsCount()
       commit('changeCategoryGoodsCount', categoryCountResult.data)
+
       const categorySaleResult = await getCategoryGoodsSale()
       commit('changeCategoryGoodsSale', categorySaleResult.data)
+
       const categoryFavorResult = await getCategoryGoodsFavor()
       commit('changeCategoryGoodsFavor', categoryFavorResult.data)
+
       const addressGoodsResult = await getAddressGoodsSale()
       commit('changeAddressGoodsSale', addressGoodsResult.data)
     }

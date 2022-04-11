@@ -20,6 +20,7 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
     newCb && newCb()
   }
   const handleEditData = (item: any) => {
+    console.log(pageModalRef.value)
     // 编辑操作的话，要拿到当前选中数据信息，在弹窗中回显
     defaultInfo.value = { ...item }
     if (pageModalRef.value) {
