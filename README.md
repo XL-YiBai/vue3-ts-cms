@@ -27,3 +27,7 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### 测试账号：
+
+用户名：coderwhy 密码：123456
