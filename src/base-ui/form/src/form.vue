@@ -135,6 +135,6 @@ export default defineComponent({
 
 <style scoped lang="less">
 .xl-form {
-  padding-top: 22px;
+  padding-top: 12px;
 }
 </style>

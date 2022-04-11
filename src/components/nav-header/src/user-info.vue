@@ -1,10 +1,25 @@
 <template>
   <div class="user-info">
+    <div class="operation">
+      <el-badge is-dot class="item">
+        <el-tooltip content="消息" placement="bottom" effect="light">
+          <el-icon class="icons"><chat-line-round /></el-icon>
+        </el-tooltip>
+      </el-badge>
+      <el-tooltip content="权限" placement="bottom" effect="light">
+        <el-icon class="icons"><collection-tag /></el-icon>
+      </el-tooltip>
+      <el-badge is-dot class="item">
+        <el-tooltip content="通知" placement="bottom" effect="light">
+          <el-icon class="icons"><message /></el-icon>
+        </el-tooltip>
+      </el-badge>
+    </div>
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar
           size="small"
-          src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+          src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f504617a3a7e479c95020c1ec0826714~tplv-k3u1fbpfcp-no-mark:100:100:100:100.awebp?"
         />
         <span class="user-name">{{ name }}</span>
       </span>
@@ -24,13 +39,18 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { CircleCloseFilled } from '@element-plus/icons-vue'
+import {
+  CircleCloseFilled,
+  ChatLineRound,
+  CollectionTag,
+  Message
+} from '@element-plus/icons-vue'
 import { useStore } from '@/store'
 import { useRouter } from 'vue-router'
 import localCache from '@/utils/cache'
 
 export default defineComponent({
-  components: { CircleCloseFilled },
+  components: { CircleCloseFilled, ChatLineRound, CollectionTag, Message },
   setup() {
     const store = useStore()
     const name = computed(() => store.state.login.userInfo.name)
@@ -48,6 +68,20 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+.operation {
+  display: inline-block;
+  .item {
+    margin: 0 12px;
+  }
+  .icons {
+    cursor: pointer;
+    font-size: 21px;
+  }
+  .icons:nth-child(2) {
+    position: relative;
+    top: 5px;
+  }
+}
 .el-dropdown-link {
   cursor: pointer;
   display: flex;

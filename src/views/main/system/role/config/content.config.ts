@@ -1,7 +1,7 @@
 // 传入XlTable组件的配置信息
 export const contentTableConfig = {
   // 数据列表的表头名称
-  title: '用户列表',
+  title: '角色列表',
 
   // 每一列的配置信息
   propList: [

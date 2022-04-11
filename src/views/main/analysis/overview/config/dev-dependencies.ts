@@ -8,10 +8,10 @@ export const devDependencies: DescriptionProp[] = [
     name: 'webpack',
     description: '5'
   },
-  {
-    name: 'vite',
-    description: '^2.2.3'
-  },
+  // {
+  //   name: 'vite',
+  //   description: '^2.2.3'
+  // },
 
   {
     name: 'eslint',

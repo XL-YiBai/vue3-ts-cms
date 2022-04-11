@@ -14,7 +14,7 @@ export default defineComponent({
     HyEditor
   },
   setup() {
-    const htmlString = ref<string>('XiaLei')
+    const htmlString = ref<string>('XiaLei要努力啊！！')
     return {
       htmlString
     }

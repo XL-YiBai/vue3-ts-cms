@@ -30,10 +30,10 @@ export const dependencies: DescriptionProp[] = [
     name: 'less',
     description: '^4.1.1'
   },
-  {
-    name: 'scss',
-    description: '^0.2.4'
-  },
+  // {
+  //   name: 'scss',
+  //   description: '^0.2.4'
+  // },
   {
     name: 'EChart',
     description: '^5.1.1'
@@ -51,10 +51,10 @@ export const dependencies: DescriptionProp[] = [
     name: 'dayjs',
     description: '^1.10.4'
   },
-  {
-    name: 'pinia',
-    description: '^2.0.0-alpha.13'
-  },
+  // {
+  //   name: 'pinia',
+  //   description: '^2.0.0-alpha.13'
+  // },
   {
     name: 'wangeditor',
     description: '^4.6.17'

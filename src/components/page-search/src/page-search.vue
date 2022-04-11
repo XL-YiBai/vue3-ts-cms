@@ -3,7 +3,12 @@
     <!-- 直接使用v-bind不指定参数名，可以直接将对象的所有属性作为props传入组件 -->
     <XlForm v-bind="searchFormConfig" v-model="formData">
       <template #header>
-        <h1 class="header">高级检索</h1>
+        <div class="header-content">
+          <h2 class="header">高级检索</h2>
+          <div class="search-icon">
+            <el-icon><search /></el-icon>
+          </div>
+        </div>
       </template>
       <template #footer>
         <div class="handle-btns">
@@ -70,9 +75,18 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.header {
-  color: red;
+<style scoped lang="less">
+.header-content {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  h2 {
+    margin: 5px 4px 0px 10px;
+  }
+  .search-icon {
+    font-size: 20px;
+    padding-top: 13px;
+  }
 }
 
 .handle-btns {
