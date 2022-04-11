@@ -1,5 +1,15 @@
 <template>
   <div class="dashboard">
+    <!-- 1.  -->
+    <el-row :gutter="10">
+      <template v-for="item in topPanelData" :key="item.title">
+        <el-col :md="12" :lg="6" :xl="6">
+          <StatisticalPanel :panelData="item" />
+        </el-col>
+      </template>
+    </el-row>
+
+    <!-- 2. 中间图表 -->
     <el-row :gutter="10">
       <el-col :span="7">
         <XlCard title="分类商品数量(饼图)">
@@ -18,6 +28,7 @@
       </el-col>
     </el-row>
 
+    <!-- 3. 底部图表 -->
     <el-row :gutter="10" class="content-row">
       <el-col :span="12">
         <XlCard title="分类商品的销量">
@@ -37,6 +48,7 @@
 import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
 
+import StatisticalPanel from '@/components/statistical-panel'
 import XlCard from '@/base-ui/card'
 import {
   PieEchart,
@@ -50,6 +62,7 @@ export default defineComponent({
   name: 'dashboard',
   components: {
     XlCard,
+    StatisticalPanel,
     PieEchart,
     RoseEchart,
     LineEchart,
@@ -62,6 +75,8 @@ export default defineComponent({
     store.dispatch('dashboard/getDashboardDataAction')
 
     // 获取数据
+    const topPanelData = computed(() => store.state.dashboard.topPanelDatas)
+
     const categoryGoodsCount = computed(() => {
       return store.state.dashboard.categoryGoodsCount.map((item: any) => {
         // 通过map转换为echart中接收数据的格式，name/value的对象
@@ -95,6 +110,7 @@ export default defineComponent({
     })
 
     return {
+      topPanelData,
       categoryGoodsCount,
       categoryGoodsSale,
       categoryGoodsFavor,

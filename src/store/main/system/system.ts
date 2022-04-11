@@ -20,7 +20,11 @@ const systemModule: Module<ISystemState, IRootState> = {
       goodsList: [],
       goodsCount: 0,
       menuList: [],
-      menuCount: 0
+      menuCount: 0,
+      departmentCount: 0,
+      departmentList: [],
+      categoryCount: 0,
+      categoryList: []
     }
   },
   actions: {
@@ -161,6 +165,18 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeMenuCount(state, count: number) {
       state.menuCount = count
+    },
+    changeDepartmentCount(state, totalCount: number) {
+      state.departmentCount = totalCount
+    },
+    changeDepartmentList(state, departmentList: any) {
+      state.departmentList = departmentList
+    },
+    changeCategoryCount(state, totalCount: number) {
+      state.categoryCount = totalCount
+    },
+    changeCategoryList(state, roleList: any) {
+      state.categoryList = roleList
     }
   }
 }
