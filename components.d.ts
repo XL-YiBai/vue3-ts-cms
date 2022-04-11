@@ -6,11 +6,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     BarEchart: typeof import('./src/components/page-echarts/src/bar-echart.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
-<<<<<<< HEAD
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElContainer: typeof import('element-plus/es')['ElContainer']
-=======
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
@@ -21,11 +16,12 @@ declare module 'vue' {
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
+    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
->>>>>>> 首页main
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
@@ -34,8 +30,6 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElLink: typeof import('element-plus/es')['ElLink']
     ElMain: typeof import('element-plus/es')['ElMain']
-<<<<<<< HEAD
-=======
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
@@ -45,9 +39,10 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
->>>>>>> 首页main
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     LineEchart: typeof import('./src/components/page-echarts/src/line-echart.vue')['default']
     MapEchart: typeof import('./src/components/page-echarts/src/map-echart.vue')['default']
@@ -58,6 +53,7 @@ declare module 'vue' {
     PageSearch: typeof import('./src/components/page-search/src/page-search.vue')['default']
     PieEchart: typeof import('./src/components/page-echarts/src/pie-echart.vue')['default']
     RoseEchart: typeof import('./src/components/page-echarts/src/rose-echart.vue')['default']
+    StatisticalPanel: typeof import('./src/components/statistical-panel/src/statistical-panel.vue')['default']
     UserInfo: typeof import('./src/components/nav-header/src/user-info.vue')['default']
   }
 }
